@@ -13,4 +13,6 @@ public interface ICartService {
     void updateChecked(Integer id, Integer checked);
 
     List<CartVO> selectByUserIdAndChecked(Integer id);
+
+    void deleteById(Integer id);
 }

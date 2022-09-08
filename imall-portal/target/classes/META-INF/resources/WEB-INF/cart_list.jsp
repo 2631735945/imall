@@ -19,13 +19,13 @@
     <li class="col06">操作</li>
 </ul>
 <c:forEach items="${list}" var="cartVO">
-    <ul class="cart_list_td clearfix">
+    <ul id="cartVO${cartVO.id}" class="cart_list_td clearfix">
         <li class="col01">
             <c:if test="${cartVO.checked==1}">
-                <input onclick="updateChecked(this.checked,${cartVO.id})" type="checkbox" name="" checked>
+                <input id="checkbox${cartVO.id}" name="selectCheckbox" onclick="updateChecked(this.checked,${cartVO.id})" type="checkbox" name="" checked>
             </c:if>
             <c:if test="${cartVO.checked==0}">
-                <input onclick="updateChecked(this.checked,${cartVO.id})"  type="checkbox" name="">
+                <input id="checkbox${cartVO.id}" name="selectCheckbox" onclick="updateChecked(this.checked,${cartVO.id})"  type="checkbox" name="">
             </c:if>
         </li>
         <li class="col02"><img src="${cartVO.mainImageUrl}"></li>
@@ -39,8 +39,8 @@
                 <a href="javascript:;" class="minus fl">-</a>
             </div>
         </li>
-        <li class="col07">25.80元</li>
-        <li class="col08"><a href="javascript:;">删除</a></li>
+        <li class="col07" id="cartItemTotalPrice${cartVO.id}">${cartVO.quantity*cartVO.productPrice}</li>元
+        <li class="col08"><a href="javascript:deleteById(${cartVO.id})">删除</a></li>
     </ul>
 
 </c:forEach>
@@ -49,7 +49,7 @@
 <ul class="settlements">
     <li class="col01"><input type="checkbox" name="" checked=""></li>
     <li class="col02">全选</li>
-    <li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b>2</b>件商品</li>
+    <li class="col03">合计(不含运费)：<span>¥</span><em id="totalPrice"></em><br>共计<b id="checkedTotalCount"></b>件商品</li>
     <li class="col04"><a href="/order/getConfirmOrderPage">去结算</a></li>
 </ul>
 
@@ -68,6 +68,27 @@
 </div>
 
 <script>
+    $(function() {
+        refreshTotalPrice();
+    });
+
+    function refreshTotalPrice() {
+        var checkboxs = $('input[name=selectCheckbox]:checked');
+        $('#checkedTotalCount').text(checkboxs.length);
+        var totalPrice = 0;
+        $(checkboxs).each(function() {
+            // this
+            // checkbox111   			    checkbox222
+            // cartItemTotalPrice111        cartItemTotalPrice222
+            var checkboxId = this.id;
+            var cartId = checkboxId.substr('checkbox'.length);//111
+            var cartItemTotalPrice = $('#cartItemTotalPrice'+cartId).text();
+            totalPrice += parseFloat(cartItemTotalPrice);
+        });
+
+        $('#totalPrice').text(totalPrice);
+    }
+
     function updateChecked(check,id) {
         var checked = check ? 1 : 0;
         $.post(
@@ -76,11 +97,34 @@
             function(jsonResult) {
                 if (jsonResult.ok) {
                     mylayer.okMsg(jsonResult.msg);
+                    refreshTotalPrice();
                 } else {
                     mylayer.errorMsg(jsonResult.msg);
                 }
             },
             'json'
+        );
+    }
+    function deleteById(id) {
+        layer.confirm(
+            '您确认要删除么？',
+            function() {
+                $.post(
+                    '/cart/deleteById',
+                    {'id':id},
+                    function(jsonResult) {
+                        if (jsonResult.ok) {
+                            mylayer.okMsg(jsonResult.msg);
+                            // 后台删除成功之后，在使用dom操作删除对应的div
+                            $('#cartVO'+id).remove();
+                            refreshTotalPrice();
+                        } else {
+                            mylayer.errorMsg(jsonResult.msg);
+                        }
+                    },
+                    'json'
+                );
+            }
         );
     }
 </script>

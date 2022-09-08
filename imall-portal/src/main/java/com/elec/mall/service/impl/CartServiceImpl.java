@@ -41,4 +41,9 @@ public class CartServiceImpl implements ICartService {
     public List<CartVO> selectByUserIdAndChecked(Integer id) {
         return cartMapper.selectByUserIdAndChecked(id);
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        cartMapper.deleteByPrimaryKey(id);
+    }
 }

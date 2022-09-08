@@ -44,4 +44,11 @@ public class CartController {
         cartService.updateChecked(id, checked);
         return JSONResult.ok("更新成功");
     }
+
+    @RequestMapping("/deleteById")
+    @ResponseBody
+    public JSONResult deleteById(Integer id) {
+        cartService.deleteById(id);
+        return JSONResult.ok("删除成功");
+    }
 }
