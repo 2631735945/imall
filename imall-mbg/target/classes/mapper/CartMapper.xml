@@ -115,14 +115,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectByUserId" parameterType="java.lang.Integer" resultType="CartVO">
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.elec.mall.pojo.vo.CartVO">
     SELECT c.id AS id,user_id,product_id,p.name AS productName,p.main_image AS productMainImage,p.price AS productPrice,quantity,checked
     FROM cart AS c INNER JOIN product AS p
                               ON c.product_id=p.id
     where user_id = #{id}
   </select>
 
-  <select id="selectByUserIdAndChecked" parameterType="java.lang.Integer" resultType="CartVO">
+  <select id="selectByUserIdAndChecked" parameterType="java.lang.Integer" resultType="com.elec.mall.pojo.vo.CartVO">
     SELECT c.id AS id,user_id,product_id,p.name AS productName,p.main_image AS productMainImage,p.price AS productPrice,quantity,checked
     FROM cart AS c INNER JOIN product AS p
                               ON c.product_id=p.id
@@ -133,12 +133,12 @@
     update cart set checked=#{checked} where id=#{id}
   </update>
 
-  <select id="selectCountByUserIdAndProductId" parameterType="Cart" resultType="Integer">
+  <select id="selectCountByUserIdAndProductId" parameterType="com.elec.mall.pojo.Cart" resultType="Integer">
     select count(*) from cart
     where user_id=#{userId} and product_id=#{productId}
   </select>
 
-  <update id="updateQuantityByUserIdAndProductId" parameterType="Cart">
+  <update id="updateQuantityByUserIdAndProductId" parameterType="com.elec.mall.pojo.Cart">
     update cart set quantity=quantity+#{quantity}
     where user_id=#{userId} and product_id=#{productId}
   </update>

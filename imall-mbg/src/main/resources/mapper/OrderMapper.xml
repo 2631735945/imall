@@ -186,13 +186,13 @@
     where order_no = #{orderNo,jdbcType=BIGINT}
   </update>
 
-  <resultMap id="OrderVOtMap" type="OrderVO">
+  <resultMap id="OrderVOtMap" type="com.elec.mall.pojo.vo.OrderVO">
     <id column="order_no" jdbcType="BIGINT" property="orderNo" />
     <result column="payment" jdbcType="DECIMAL" property="payment" />
     <result column="postage" jdbcType="INTEGER" property="postage" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <collection property="list" ofType="OrderItem">
+    <collection property="list" ofType="com.elec.mall.pojo.OrderItem">
       <result column="product_name"  property="productName" />
       <result column="product_image"  property="productImage" />
       <result column="current_unit_price"  property="currentUnitPrice" />

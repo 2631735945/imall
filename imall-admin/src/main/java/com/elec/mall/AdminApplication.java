@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 // @MapperScan注解，扫描MyBatis Mapper接口类
 @MapperScan("com.elec.mall.mapper")
-//quartz定时任务
+//开启quartz定时任务
 @EnableScheduling
 public class AdminApplication {
     private static final Logger LOG = LoggerFactory.getLogger(AdminApplication.class);

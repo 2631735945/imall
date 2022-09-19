@@ -40,20 +40,26 @@ public class OrderServiceImpl implements IOrderService {
         // payment decimal(20,2)实际付款金额,单位是元,保留两位小数
 
         // 购物车里面选中要去生成订单结算商品
+//        根据用户id查出该用户购物车里的选中去结算的商品
         List<CartVO> cartVOList = cartMapper.selectByUserIdAndChecked(order.getUserId());
         // 整个订单的总价格
         BigDecimal payment = BigDecimal.valueOf(0.0);
         for (CartVO cartVO : cartVOList) {
+//            orderItem  订单项  代表订单里的其中一个商品
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderNo(id);
             orderItem.setUserId(order.getUserId());
-            orderItem.setQuantity(cartVO.getQuantity());
+            orderItem.setQuantity(cartVO.getQuantity());//数量
+
             orderItem.setProductId(cartVO.getProductId());
             // 根据productId完全可以去product表查出来：name、price、mainImage
+            //但是还是额外把这些属性加上了，这处于两个方面考虑
             // 1、效率考虑，inner join比较耗时
-            // 2、当时购买的快照，因为后期这些商品信息可能会被修改
+            // 2、当时购买的快照，因为后期这些商品信息可能会被修改，要是再根据productId去查
+            //可能就和当时买的商品信息对不起来了，所以要拍一个快照，避免以后商品信息修改，或者该商品直接被下架之后，
+            // 查看购买的产品的时候商品信息出问题
             orderItem.setProductName(cartVO.getProductName());
-            orderItem.setCurrentUnitPrice(cartVO.getProductPrice());
+            orderItem.setCurrentUnitPrice(cartVO.getProductPrice());//单价
             orderItem.setProductImage(cartVO.getProductMainImage());
             // totalPrice = 商品价格*数量
             BigDecimal productPrice = cartVO.getProductPrice();

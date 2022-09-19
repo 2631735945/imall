@@ -40,8 +40,8 @@ public class ProductController {
 
     @RequestMapping("/add")
     @ResponseBody
-    public JSONResult add(Product product){
-        return productService.add(product);
+    public JSONResult add(Product product) {
+        productService.add(product);
+        return JSONResult.ok("插入成功");
     }
-
 }

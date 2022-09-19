@@ -11,9 +11,9 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 
 public class QiniuUtils {
-    public static final String ACCESS_KEY = "WV8l2fHbPFv8Un1EHBd4WjNME1ZjpR9HLxN1A500";
-    public static final String SECRET_KEY = "0AaHCjn9EtcLVfiZ4YKwMQHR9BUhcS0z0CmoHJl7";
-    public static final String BUCKET = "ffr001";
+    public static final String ACCESS_KEY = "f6yd5ICRJOtdpWr05WrfkaopWi0Mf5IQNwZT-4n1";
+    public static final String SECRET_KEY = "2AKFqcAPLVaptqyTr0WHZXp9ipwFc0xxzAkXbyrp";
+    public static final String BUCKET = "java22071";
 
     public static void upload2Qiniu(String filePath,String fileName){
         //构造一个带指定 Region 对象的配置类
